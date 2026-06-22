@@ -1,5 +1,5 @@
 ﻿.attendance-header {
-    background: #F05160;
+    background: #B7D683;
     color: white;
     padding: 20px;
     border-radius: 12px;
@@ -25,11 +25,11 @@
 }
 
     .menu-btn:hover {
-        background: #dddddd;
+        background: #dfeec6; 
     }
 
 .active-btn {
-    background: #F05160;
+    background: #B7D683;
     color: white;
 }
 
