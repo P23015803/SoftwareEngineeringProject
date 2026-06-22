@@ -1,0 +1,202 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace SoftwareEngineeringProject
+{
+    public partial class ManageAttendance : System.Web.UI.Page
+    {
+        string connStr =
+        ConfigurationManager.ConnectionStrings["CollegeManagementSystem"].ConnectionString;
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!IsPostBack)
+            {
+                if (Session["SelectedCourseID"] == null)
+                {
+                    Response.Redirect("LecturerDashboard.aspx");
+                }
+
+                LoadCourseInfo();
+                LoadStudents();
+            }
+        }
+
+        private void LoadCourseInfo()
+        {
+            using (SqlConnection conn =
+                new SqlConnection(connStr))
+            {
+                string query =
+                @"SELECT CourseCode, CourseName FROM Courses WHERE CourseID=@CourseID";
+
+                SqlCommand cmd =
+                    new SqlCommand(query, conn);
+
+                cmd.Parameters.AddWithValue(
+                    "@CourseID",
+                    Convert.ToInt32(Session["SelectedCourseID"]));
+
+                conn.Open();
+
+                SqlDataReader dr =
+                    cmd.ExecuteReader();
+
+                if (dr.Read())
+                {
+                    lblCourse.Text =
+                        dr["CourseCode"] + " : " +
+                        dr["CourseName"];
+                }
+            }
+        }
+
+        private void LoadStudents()
+        {
+            using (SqlConnection conn =
+                new SqlConnection(connStr))
+            {
+                string query =
+                @"SELECT E.EnrollmentID, S.StudentID, U.FullName, U.Email
+
+                FROM Enrollments E
+
+                INNER JOIN Students S
+                ON E.StudentID = S.StudentID
+
+                INNER JOIN Users U
+                ON S.UserID = U.UserID
+
+                WHERE E.CourseID=@CourseID";
+
+                SqlCommand cmd =
+                    new SqlCommand(query, conn);
+
+                cmd.Parameters.AddWithValue(
+                    "@CourseID",
+                    Convert.ToInt32(Session["SelectedCourseID"]));
+
+                SqlDataAdapter da =
+                    new SqlDataAdapter(cmd);
+
+                DataTable dt =
+                    new DataTable();
+
+                da.Fill(dt);
+
+                lblStudentCount.Text = "Total Students: " + dt.Rows.Count;
+
+                if (dt.Rows.Count == 0)
+                {
+                    lblNoStudents.Text =
+                        "No students enrolled in this course.";
+
+                    gvStudents.Visible = false;
+                    btnSave.Visible = false;
+                }
+                else
+                {
+                    lblNoStudents.Text = "";
+
+                    gvStudents.Visible = true;
+                    btnSave.Visible = true;
+
+                    gvStudents.DataSource = dt;
+                    gvStudents.DataBind();
+                }
+            }
+        }
+
+        protected void btnSave_Click(object sender, EventArgs e)
+        {
+            if (gvStudents.Rows.Count == 0)
+            {
+                lblMessage.Text =
+                    "No students available for attendance.";
+
+                return;
+            }
+
+            lblDateError.Text = "";
+
+            if (string.IsNullOrWhiteSpace(txtDate.Text))
+            {
+                lblDateError.Text =
+                    "Please select an attendance date.";
+
+                return;
+            }
+
+            DateTime attendanceDate = Convert.ToDateTime(txtDate.Text);
+
+            using (SqlConnection con =
+                new SqlConnection(connStr))
+            {
+                con.Open();
+
+                foreach (GridViewRow row in gvStudents.Rows)
+                {
+                    int enrollmentID = Convert.ToInt32(row.Cells[0].Text);
+
+                    DropDownList ddl =
+                    (DropDownList)row.FindControl(
+                    "ddlStatus");
+
+                    string status =
+                    ddl.SelectedValue;
+
+                    string query = @"
+                    IF EXISTS
+                    (
+                        SELECT 1
+                        FROM Attendance
+                        WHERE EnrollmentID = @EnrollmentID
+                        AND AttendanceDate = @Date
+                    )
+                    BEGIN
+                        UPDATE Attendance
+                        SET Status = @Status
+                        WHERE EnrollmentID = @EnrollmentID
+                        AND AttendanceDate = @Date
+                    END
+                    ELSE
+                    BEGIN
+                        INSERT INTO Attendance
+                        (
+                            EnrollmentID,
+                            AttendanceDate,
+                            Status
+                        )
+                        VALUES
+                        (
+                            @EnrollmentID,
+                            @Date,
+                            @Status
+                        )
+                    END";
+
+                    SqlCommand cmd =
+                    new SqlCommand(query, con);
+
+                    cmd.Parameters.AddWithValue("@EnrollmentID", enrollmentID);
+
+                    cmd.Parameters.AddWithValue("@Date", attendanceDate);
+
+                    cmd.Parameters.AddWithValue("@Status", status);
+
+                    cmd.ExecuteNonQuery();
+                }
+
+                lblMessage.Text =
+                "Attendance saved successfully.";
+            }
+        }
+    }
+}
