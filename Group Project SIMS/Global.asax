@@ -1,0 +1,1 @@
+<%@ Application Language="C#" Inherits="Group_Project_SIMS.Global" %>
