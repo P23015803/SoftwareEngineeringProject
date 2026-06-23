@@ -22,6 +22,10 @@
             <a class="btn btn-info text-white me-2" href="Results.aspx">Results</a>
             <a class="btn btn-secondary me-2" href="Notifications.aspx">Notifications</a>
             <a class="btn btn-warning text-dark" href="Attendance.aspx">Attendance</a>
+
+            <a class="btn btn-success me-2" href="PerformanceReport.aspx">📈 Performance Report</a>
+            <a class="btn btn-dark" href="ViewAcademicHistory.aspx">📜 Academic History</a>
+            <a class="btn btn-outline-secondary" href="tNotification.aspx">🔔 tNotifications</a>
         </div>
 
         <asp:Button ID="btnLogout" runat="server" Text="Logout"
