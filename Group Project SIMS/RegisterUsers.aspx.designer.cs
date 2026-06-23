@@ -24,6 +24,15 @@ namespace Group_Project_SIMS
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
+        /// lblAllFields control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblAllFields;
+
+        /// <summary>
         /// txtName control.
         /// </summary>
         /// <remarks>
@@ -89,6 +98,10 @@ namespace Group_Project_SIMS
         /// <summary>
         /// chkHOP control.
         /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkHOP;
 
         /// <summary>
@@ -155,6 +168,33 @@ namespace Group_Project_SIMS
         protected global::System.Web.UI.WebControls.TextBox txtSearchDept;
 
         /// <summary>
+        /// ddlSearchProgramme control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlSearchProgramme;
+
+        /// <summary>
+        /// ddlSearchAdmissionStatus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlSearchAdmissionStatus;
+
+        /// <summary>
+        /// ddlSearchHOP control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlSearchHOP;
+
+        /// <summary>
         /// btnSearch control.
         /// </summary>
         /// <remarks>
@@ -164,6 +204,15 @@ namespace Group_Project_SIMS
         protected global::System.Web.UI.WebControls.Button btnSearch;
 
         /// <summary>
+        /// btnToggleSort control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnToggleSort;
+
+        /// <summary>
         /// btnReset control.
         /// </summary>
         /// <remarks>
@@ -171,31 +220,6 @@ namespace Group_Project_SIMS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnReset;
-
-        /// <summary>
-        /// lblAllFields control.
-        /// </summary>
-        protected global::System.Web.UI.WebControls.Label lblAllFields;
-
-        /// <summary>
-        /// btnToggleSort control.
-        /// </summary>
-        protected global::System.Web.UI.WebControls.LinkButton btnToggleSort;
-
-        /// <summary>
-        /// ddlSearchProgramme control.
-        /// </summary>
-        protected global::System.Web.UI.WebControls.DropDownList ddlSearchProgramme;
-
-        /// <summary>
-        /// ddlSearchAdmissionStatus control.
-        /// </summary>
-        protected global::System.Web.UI.WebControls.DropDownList ddlSearchAdmissionStatus;
-
-        /// <summary>
-        /// ddlSearchHOP control.
-        /// </summary>
-        protected global::System.Web.UI.WebControls.DropDownList ddlSearchHOP;
 
         /// <summary>
         /// rblSearchRole control.
@@ -223,11 +247,6 @@ namespace Group_Project_SIMS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvStudents;
-
-        /// <summary>
-        /// ddlAdmissionStatusGrid control.
-        /// </summary>
-        protected global::System.Web.UI.WebControls.DropDownList ddlAdmissionStatusGrid;
 
         /// <summary>
         /// pnlLecturerGrid control.

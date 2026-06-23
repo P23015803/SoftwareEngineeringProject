@@ -132,3 +132,4 @@ namespace Group_Project_SIMS
         protected global::System.Web.UI.WebControls.GridView gvCourse;
     }
 }
+ 

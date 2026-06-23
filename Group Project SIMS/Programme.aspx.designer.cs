@@ -60,21 +60,6 @@ namespace Group_Project_SIMS
         protected global::System.Web.UI.WebControls.DropDownList ddlLecturer;
 
         /// <summary>
-        /// txtSearchProgramme control.
-        /// </summary>
-        protected global::System.Web.UI.WebControls.TextBox txtSearchProgramme;
-
-        /// <summary>
-        /// btnSearchProgramme control.
-        /// </summary>
-        protected global::System.Web.UI.WebControls.Button btnSearchProgramme;
-
-        /// <summary>
-        /// btnResetProgramme control.
-        /// </summary>
-        protected global::System.Web.UI.WebControls.Button btnResetProgramme;
-
-        /// <summary>
         /// btnSave control.
         /// </summary>
         /// <remarks>
@@ -91,6 +76,33 @@ namespace Group_Project_SIMS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblMsg;
+
+        /// <summary>
+        /// txtSearchProgramme control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtSearchProgramme;
+
+        /// <summary>
+        /// btnSearchProgramme control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnSearchProgramme;
+
+        /// <summary>
+        /// btnResetProgramme control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnResetProgramme;
 
         /// <summary>
         /// gvProgramme control.

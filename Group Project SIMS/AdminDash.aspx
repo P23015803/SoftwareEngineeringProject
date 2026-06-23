@@ -69,6 +69,7 @@
                 <a href="ApproveCalendar.aspx" class="big-button">Approve Calendar</a>
                 <a href="ManageCalendar.aspx" class="big-button">Manage Calendar</a>
                 <a href="Enrollment.aspx" class="big-button">Enrollment</a>
+                <a href="Results.aspx" class="big-button">Results</a>
             </div>
         </div>
     </form>
