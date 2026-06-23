@@ -16,9 +16,18 @@
 
     <h2>Student Dashboard</h2>
 
-    <asp:Button ID="btnLogout" runat="server" Text="Logout"
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <a class="btn btn-primary me-2" href="RegisterCourses.aspx">Register Courses</a>
+            <a class="btn btn-info text-white me-2" href="Results.aspx">Results</a>
+            <a class="btn btn-secondary me-2" href="Notifications.aspx">Notifications</a>
+            <a class="btn btn-warning text-dark" href="Attendance.aspx">Attendance</a>
+        </div>
+
+        <asp:Button ID="btnLogout" runat="server" Text="Logout"
         CssClass="btn btn-danger float-end"
-        OnClick="btnLogout_Click" />
+            OnClick="btnLogout_Click" />
+    </div>
 
     <hr />
 
