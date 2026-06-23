@@ -67,6 +67,26 @@
                     CssClass="menu-link">
                     Marks Report
                 </asp:HyperLink>
+            <asp:HyperLink ID="lnkCourseNotes"
+                    runat="server"
+                    NavigateUrl="~/CourseNotes.aspx" 
+                    CssClass="menu-link">
+                    Manage Course Notes
+                </asp:HyperLink>
+                
+                <asp:HyperLink ID="lnkAnnouncements"
+                    runat="server"
+                    NavigateUrl="~/LecturerAnnouncement.aspx" 
+                    CssClass="menu-link">
+                    Manage Announcements
+                </asp:HyperLink>
+                
+                <asp:HyperLink ID="lnkViewAnnouncements"
+                    runat="server"
+                    NavigateUrl="~/ViewAnnouncements.aspx" 
+                    CssClass="menu-link">
+                    View Announcements
+            </asp:HyperLink>
 
             </div>
 
