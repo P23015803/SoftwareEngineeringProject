@@ -155,20 +155,100 @@ namespace SoftwareEngineeringProject
             DataTable dt = (DataTable)ViewState["AttendanceData"];
             if (dt == null || dt.Rows.Count == 0) return;
 
+            int totalStudents = dt.Rows.Count;
+            int criticalStudents = 0;
+            int safeStudents = 0;
+
+            foreach (DataRow row in dt.Rows)
+            {
+                if (Convert.ToInt32(row["Total Absences"]) >= 4)
+                    criticalStudents++;
+                else
+                    safeStudents++;
+            }
+
+            float safePercentage = (float)safeStudents / totalStudents * 100f;
+            float criticalPercentage = (float)criticalStudents / totalStudents * 100f;
+
             Document pdfDoc = new Document(PageSize.A4, 25f, 25f, 30f, 30f);
             MemoryStream ms = new MemoryStream();
             PdfWriter.GetInstance(pdfDoc, ms);
-
             pdfDoc.Open();
 
-            iTextSharp.text.Font titleFont = FontFactory.GetFont("Arial", 18, iTextSharp.text.Font.BOLD);
+            iTextSharp.text.Font titleFont = FontFactory.GetFont("Arial", 20, iTextSharp.text.Font.BOLD, new BaseColor(4, 9, 71));
+            iTextSharp.text.Font sectionFont = FontFactory.GetFont("Arial", 12, iTextSharp.text.Font.BOLD);
             iTextSharp.text.Font metaFont = FontFactory.GetFont("Arial", 10, iTextSharp.text.Font.ITALIC);
             iTextSharp.text.Font thFont = FontFactory.GetFont("Arial", 10, iTextSharp.text.Font.BOLD);
             iTextSharp.text.Font tdFont = FontFactory.GetFont("Arial", 10, iTextSharp.text.Font.NORMAL);
 
             pdfDoc.Add(new Paragraph("Attendance Summary Report", titleFont));
             pdfDoc.Add(new Paragraph("Course: " + lblCourse.Text, tdFont));
-            pdfDoc.Add(new Paragraph("Generated On: " + DateTime.Now.ToString("g"), metaFont));
+            pdfDoc.Add(new Paragraph("Generated On: " + DateTime.Now.ToString("F"), metaFont));
+            pdfDoc.Add(new Paragraph(" ")); 
+
+            PdfPTable summaryTable = new PdfPTable(3);
+            summaryTable.WidthPercentage = 100;
+            summaryTable.SetWidths(new float[] { 1f, 1f, 1f });
+
+            summaryTable.AddCell(CreateSummaryCell("Total Enrolled Students", totalStudents.ToString(), new BaseColor(240, 240, 240)));
+            summaryTable.AddCell(CreateSummaryCell("Safe Attendance (< 4)", safeStudents.ToString(), new BaseColor(220, 245, 220)));
+            summaryTable.AddCell(CreateSummaryCell("Critical Attendance (>= 4)", criticalStudents.ToString(), new BaseColor(255, 210, 210)));
+
+            pdfDoc.Add(summaryTable);
+            pdfDoc.Add(new Paragraph(" "));
+
+            // 4. Visual Progress Bar Chart (Native iTextSharp alternative)
+            pdfDoc.Add(new Paragraph("Cohort Health Distribution:", sectionFont));
+            pdfDoc.Add(new Paragraph(" "));
+
+            // Fallback protection for single data scenarios
+            float displaySafeWidth = safePercentage == 0 ? 0.01f : safePercentage;
+            float displayCritWidth = criticalPercentage == 0 ? 0.01f : criticalPercentage;
+
+            if (safeStudents == 0 && criticalStudents > 0) { displayCritWidth = 100f; displaySafeWidth = 0f; }
+            if (criticalStudents == 0 && safeStudents > 0) { displaySafeWidth = 100f; displayCritWidth = 0f; }
+
+            // Determine how many columns we actually need to display (1 or 2)
+            int columnCount = (safeStudents > 0 ? 1 : 0) + (criticalStudents > 0 ? 1 : 0);
+
+            if (columnCount > 0)
+            {
+                PdfPTable chartBarTable = new PdfPTable(columnCount);
+                chartBarTable.WidthPercentage = 100;
+
+                // Build structural width layout cleanly based on what contains data
+                if (columnCount == 2)
+                {
+                    chartBarTable.SetWidths(new float[] { displaySafeWidth, displayCritWidth });
+                }
+
+                if (safeStudents > 0)
+                {
+                    PdfPCell safeCell = new PdfPCell(new Phrase($"Safe: {safePercentage:0.}%", thFont));
+                    safeCell.BackgroundColor = new BaseColor(144, 238, 144); // Light Green
+                    safeCell.HorizontalAlignment = Element.ALIGN_CENTER;
+                    safeCell.Padding = 12f;
+                    chartBarTable.AddCell(safeCell);
+                }
+                if (criticalStudents > 0)
+                {
+                    PdfPCell critCell = new PdfPCell(new Phrase($"Warning: {criticalPercentage:0.}%", thFont));
+                    critCell.BackgroundColor = new BaseColor(255, 127, 127); // Light Coral Red
+                    critCell.HorizontalAlignment = Element.ALIGN_CENTER;
+                    critCell.Padding = 12f;
+                    chartBarTable.AddCell(critCell);
+                }
+
+                pdfDoc.Add(chartBarTable);
+            }
+            else
+            {
+                // Edge-case handle if no records match at all
+                pdfDoc.Add(new Paragraph("No data available to plot chart distribution.", tdFont));
+            }
+
+            pdfDoc.Add(new Paragraph(" "));
+            pdfDoc.Add(new Paragraph("Detailed Student Breakdown List:", sectionFont));
             pdfDoc.Add(new Paragraph(" "));
 
             PdfPTable table = new PdfPTable(dt.Columns.Count);
@@ -177,8 +257,9 @@ namespace SoftwareEngineeringProject
             foreach (DataColumn col in dt.Columns)
             {
                 PdfPCell cell = new PdfPCell(new Phrase(col.ColumnName, thFont));
-                cell.BackgroundColor = new BaseColor(240, 240, 240);
+                cell.BackgroundColor = new BaseColor(183, 214, 131); 
                 cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                cell.Padding = 8f;
                 table.AddCell(cell);
             }
 
@@ -190,10 +271,11 @@ namespace SoftwareEngineeringProject
                 {
                     PdfPCell cell = new PdfPCell(new Phrase(item.ToString(), tdFont));
                     cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                    cell.Padding = 6f;
 
-                    if (totalAbsences > 4)
+                    if (totalAbsences >= 4)
                     {
-                        cell.BackgroundColor = new BaseColor(255, 182, 193);
+                        cell.BackgroundColor = new BaseColor(255, 182, 193); 
                     }
 
                     table.AddCell(cell);
@@ -205,9 +287,32 @@ namespace SoftwareEngineeringProject
 
             Response.Clear();
             Response.ContentType = "application/pdf";
-            Response.AddHeader("content-disposition", "attachment;filename=AttendanceSummary_" + DateTime.Now.ToString("yyyyMMdd") + ".pdf");
+            Response.AddHeader("content-disposition", "attachment;filename=DetailedAttendanceSummary_" + DateTime.Now.ToString("yyyyMMdd") + ".pdf");
             Response.BinaryWrite(ms.ToArray());
             Response.End();
+        }
+        private PdfPCell CreateSummaryCell(string header, string value, BaseColor bgColor)
+        {
+            iTextSharp.text.Font lblFont = FontFactory.GetFont("Arial", 9, iTextSharp.text.Font.NORMAL, BaseColor.DARK_GRAY);
+            iTextSharp.text.Font valFont = FontFactory.GetFont("Arial", 16, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+
+            PdfPCell cell = new PdfPCell();
+            cell.BackgroundColor = bgColor;
+            cell.Padding = 10f;
+            cell.HorizontalAlignment = Element.ALIGN_CENTER;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.BorderWidth = 1f;
+            cell.BorderColor = new BaseColor(210, 210, 210);
+
+            Paragraph p1 = new Paragraph(header, lblFont);
+            p1.Alignment = Element.ALIGN_CENTER;
+            cell.AddElement(p1);
+
+            Paragraph p2 = new Paragraph(value, valFont);
+            p2.Alignment = Element.ALIGN_CENTER;
+            cell.AddElement(p2);
+
+            return cell;
         }
     }
 }
