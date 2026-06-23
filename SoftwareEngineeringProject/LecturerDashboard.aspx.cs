@@ -165,6 +165,9 @@ namespace SoftwareEngineeringProject
                 lnkAttendanceReport.CssClass = "menu-disabled";
                 lnkEnterMarks.CssClass = "menu-disabled";
                 lnkMarksReport.CssClass = "menu-disabled";
+                lnkCourseNotes.CssClass = "menu-disabled";
+                lnkAnnouncements.CssClass = "menu-disabled";
+                lnkViewAnnouncements.CssClass = "menu-disabled";
             }
             else
             {
@@ -182,6 +185,14 @@ namespace SoftwareEngineeringProject
                 lnkEnterMarks.NavigateUrl = "EnterMarks.aspx";
 
                 lnkMarksReport.NavigateUrl = "MarksReport.aspx";
+
+                lnkCourseNotes.CssClass = "menu-link";
+                lnkAnnouncements.CssClass = "menu-link";
+                lnkViewAnnouncements.CssClass = "menu-link";
+        
+                lnkCourseNotes.NavigateUrl = "CourseNotes.aspx";
+                lnkAnnouncements.NavigateUrl = "LecturerAnnouncement.aspx";
+                lnkViewAnnouncements.NavigateUrl = "ViewAnnouncements.aspx";
             }
         }
 
