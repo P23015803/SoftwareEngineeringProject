@@ -188,6 +188,77 @@ namespace SoftwareEngineeringProject
                     cmd.Parameters.AddWithValue("@Status", status);
 
                     cmd.ExecuteNonQuery();
+                    if (status == "Absent")
+                    {
+                        int activeStudentID = 0;
+                        string studentLookupQuery = "SELECT StudentID FROM Enrollments WHERE EnrollmentID = @EnrollmentID";
+                        using (SqlCommand lookupCmd = new SqlCommand(studentLookupQuery, con))
+                        {
+                            lookupCmd.Parameters.AddWithValue("@EnrollmentID", enrollmentID);
+                            object result = lookupCmd.ExecuteScalar();
+                            if (result != null)
+                            {
+                                activeStudentID = Convert.ToInt32(result);
+                            }
+                        }
+
+                        if (activeStudentID > 0)
+                        {
+                            string countQuery = @"
+                            SELECT COUNT(*) 
+                            FROM Attendance A
+                            INNER JOIN Enrollments E ON A.EnrollmentID = E.EnrollmentID
+                            WHERE E.StudentID = @StudentID 
+                            AND E.CourseID = @CourseID 
+                            AND A.Status = 'Absent'";
+
+                            int totalAbsences = 0;
+                            using (SqlCommand countCmd = new SqlCommand(countQuery, con))
+                            {
+                                countCmd.Parameters.AddWithValue("@StudentID", activeStudentID);
+                                countCmd.Parameters.AddWithValue("@CourseID", currentCourseID);
+                                totalAbsences = Convert.ToInt32(countCmd.ExecuteScalar());
+                            }
+
+                            if (totalAbsences >= 4)
+                            {
+                                string warningMessage = $"Attendance Warning: You have accumulated {totalAbsences} absences for {courseName}. Your attendance is critically low.";
+
+                                string alertCheckQuery = @"
+                                SELECT COUNT(*) 
+                                FROM StudentAlerts 
+                                WHERE StudentID = @StudentID 
+                                AND CourseID = @CourseID 
+                                AND AlertType = 'Attendance Warning'
+                                AND AlertMessage LIKE @MatchMessage";
+
+                                int existingAlerts = 0;
+                                using (SqlCommand checkCmd = new SqlCommand(alertCheckQuery, con))
+                                {
+                                    checkCmd.Parameters.AddWithValue("@StudentID", activeStudentID);
+                                    checkCmd.Parameters.AddWithValue("@CourseID", currentCourseID);
+                                    checkCmd.Parameters.AddWithValue("@MatchMessage", "%" + totalAbsences + " absences%");
+                                    existingAlerts = Convert.ToInt32(checkCmd.ExecuteScalar());
+                                }
+
+                                if (existingAlerts == 0)
+                                {
+                                    string alertQuery = @"
+                                    INSERT INTO StudentAlerts (StudentID, CourseID, AlertType, AlertMessage, IsRead, CreatedDate)
+                                    VALUES (@StudentID, @CourseID, 'Attendance Warning', @AlertMessage, 0, @CreatedDate)";
+
+                                    using (SqlCommand alertCmd = new SqlCommand(alertQuery, con))
+                                    {
+                                        alertCmd.Parameters.AddWithValue("@StudentID", activeStudentID);
+                                        alertCmd.Parameters.AddWithValue("@CourseID", currentCourseID);
+                                        alertCmd.Parameters.AddWithValue("@AlertMessage", warningMessage);
+                                        alertCmd.Parameters.AddWithValue("@CreatedDate", DateTime.Now);
+                                        alertCmd.ExecuteNonQuery();
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
 
                 lblMessage.Text =
