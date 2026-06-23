@@ -42,7 +42,7 @@
 
             <asp:Button ID="btnMarks"
                 runat="server"
-                Text="Marks"
+                Text="Enter Marks"
                 PostBackUrl="~/EnterMarks.aspx"
                 CssClass="menu-btn" />
 
