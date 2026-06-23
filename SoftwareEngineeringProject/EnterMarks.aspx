@@ -55,6 +55,7 @@
                     runat="server"
                     AutoGenerateColumns="False"
                     DataKeyNames="EnrollmentID"
+                    OnRowCommand="gvStudents_RowCommand"
                     CssClass="table table-bordered table-striped">
 
                     <Columns>
@@ -62,15 +63,16 @@
                         <asp:BoundField DataField="StudentID" HeaderText="Student ID" />
                         <asp:BoundField DataField="FullName" HeaderText="Student Name" />
 
-                        <asp:TemplateField HeaderText="Assignment">
+                        <asp:TemplateField HeaderText="Assignments">
                             <ItemTemplate>
-                                <asp:TextBox ID="txtAssignment" runat="server" CssClass="form-control" />
-                            </ItemTemplate>
-                        </asp:TemplateField>
 
-                        <asp:TemplateField HeaderText="Quiz">
-                            <ItemTemplate>
-                                <asp:TextBox ID="txtQuiz" runat="server" CssClass="form-control" />
+                                <asp:Button ID="btnViewAssignments"
+                                    runat="server"
+                                    Text="View Assignments"
+                                    CssClass="btn btn-primary btn-sm"
+                                    CommandName="ViewAssignments"
+                                    CommandArgument='<%# Eval("EnrollmentID") %>' />
+
                             </ItemTemplate>
                         </asp:TemplateField>
 

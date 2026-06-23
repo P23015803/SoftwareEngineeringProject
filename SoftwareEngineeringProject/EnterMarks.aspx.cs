@@ -57,7 +57,7 @@ namespace SoftwareEngineeringProject
                 new SqlConnection(connStr))
             {
                 string query =
-                @"SELECT E.EnrollmentID, S.StudentID, U.FullName, R.AssignmentMarks, R.QuizMarks, R.MidTestMarks, R.FinalExamMarks
+                @"SELECT E.EnrollmentID, S.StudentID, U.FullName, R.AssignmentMarks, R.MidTestMarks, R.FinalExamMarks
                 
                 FROM Enrollments E
                 
@@ -99,6 +99,16 @@ namespace SoftwareEngineeringProject
             }
         }
 
+        protected void gvStudents_RowCommand(object sender,GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "ViewAssignments")
+            {
+                Session["SelectedEnrollmentID"] = Convert.ToInt32(e.CommandArgument);
+
+                Response.Redirect("StudentAssignments.aspx");
+            }
+        }
+
         protected void btnSave_Click(object sender, EventArgs e)
         {
             using (SqlConnection conn =
@@ -110,15 +120,19 @@ namespace SoftwareEngineeringProject
                 {
                     int enrollmentID = Convert.ToInt32(gvStudents.DataKeys[row.RowIndex].Value);
 
-                    decimal assignment =
-                        string.IsNullOrWhiteSpace(((TextBox)row.FindControl("txtAssignment")).Text)
-                        ? 0
-                        : Convert.ToDecimal(((TextBox)row.FindControl("txtAssignment")).Text);
+                    decimal assignment = 0;
 
-                    decimal quiz =
-                        string.IsNullOrWhiteSpace(((TextBox)row.FindControl("txtQuiz")).Text)
-                        ? 0
-                        : Convert.ToDecimal(((TextBox)row.FindControl("txtQuiz")).Text);
+                    string assignmentQuery = 
+                        @"
+                        SELECT ISNULL(SUM(Marks),0)
+                        FROM AssignmentSubmissions
+                        WHERE EnrollmentID = @EnrollmentID";
+
+                    SqlCommand assignmentCmd = new SqlCommand(assignmentQuery, conn);
+
+                    assignmentCmd.Parameters.AddWithValue("@EnrollmentID",enrollmentID);
+
+                    assignment = Convert.ToDecimal(assignmentCmd.ExecuteScalar());
 
                     decimal midTest =
                         string.IsNullOrWhiteSpace(((TextBox)row.FindControl("txtMidTest")).Text)
@@ -130,7 +144,7 @@ namespace SoftwareEngineeringProject
                         ? 0
                         : Convert.ToDecimal(((TextBox)row.FindControl("txtFinalExam")).Text);
 
-                    decimal totalMarks = assignment + quiz + midTest + finalExam;
+                    decimal totalMarks = assignment + midTest + finalExam;
 
                     string grade;
                     decimal gradePoint;
@@ -171,7 +185,6 @@ namespace SoftwareEngineeringProject
                     BEGIN
                         UPDATE Results
                         SET AssignmentMarks = @Assignment,
-                            QuizMarks = @Quiz,
                             MidTestMarks = @MidTest,
                             FinalExamMarks = @FinalExam,
                             Marks = @Marks,
@@ -185,7 +198,6 @@ namespace SoftwareEngineeringProject
                         (
                             EnrollmentID,
                             AssignmentMarks,
-                            QuizMarks,
                             MidTestMarks,
                             FinalExamMarks,
                             Marks,
@@ -196,7 +208,6 @@ namespace SoftwareEngineeringProject
                         (
                             @EnrollmentID,
                             @Assignment,
-                            @Quiz,
                             @MidTest,
                             @FinalExam,
                             @Marks,
@@ -210,8 +221,6 @@ namespace SoftwareEngineeringProject
                     cmd.Parameters.AddWithValue("@EnrollmentID", enrollmentID);
 
                     cmd.Parameters.AddWithValue("@Assignment", assignment);
-
-                    cmd.Parameters.AddWithValue("@Quiz", quiz);
 
                     cmd.Parameters.AddWithValue("@MidTest", midTest);
 

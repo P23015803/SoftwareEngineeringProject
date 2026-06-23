@@ -133,14 +133,13 @@ namespace SoftwareEngineeringProject
 
             DateTime attendanceDate = Convert.ToDateTime(txtDate.Text);
 
-            using (SqlConnection con =
-                new SqlConnection(connStr))
+            using (SqlConnection con = new SqlConnection(connStr))
             {
                 con.Open();
 
                 foreach (GridViewRow row in gvStudents.Rows)
                 {
-                    int enrollmentID = Convert.ToInt32(row.Cells[0].Text);
+                    int enrollmentID = Convert.ToInt32(gvStudents.DataKeys[row.RowIndex].Value);
 
                     DropDownList ddl =
                     (DropDownList)row.FindControl(
