@@ -4,14 +4,14 @@
     font-family: Arial, sans-serif;
 }
 
-.attendance-container {
+.marks-container {
     width: 90%;
     margin: auto;
 }
 
-/*Attendance Header*/
-.attendance-header {
-    background: #C977F2;
+/* Marks Header */
+.marks-header {
+    background: #76B2F5;
     color: white;
     padding: 20px;
     border-radius: 12px;
@@ -32,7 +32,7 @@
 }
 
 /* Navigation Bar */
-.attendance-menu {
+.marks-menu {
     display: flex;
     gap: 10px;
     margin-bottom: 20px;
@@ -51,28 +51,37 @@
 }
 
     .menu-btn:hover {
-        background: #D2AEE6;
+        background: #AEC8E6;
         color: black;
     }
 
 .active-btn {
-    background: #C977F2;
+    background: #76B2F5;
     color: white !important;
     font-weight: bold;
 }
 
-.btn-filter {
-    background-color: #6c757d;
-    border: none;
+/* Student Information Block Layout */
+.student-meta-card {
+    background: white;
+    padding: 20px;
     border-radius: 8px;
-    padding: 7px 16px;
+    border-left: 5px solid #76B2F5;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    font-size: 14px;
 }
 
-    .btn-filter:hover {
-        background-color: #5a6268;
-    }
+/* Summary Panel Calculation View Box */
+.summary-box {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border: 1px solid #dee2e6;
+    font-size: 14px;
+}
 
-/* Table */
+/* Report Table */
 .report-grid {
     width: 100%;
     background: white;
@@ -100,10 +109,3 @@ table {
         vertical-align: middle;
         padding: 10px;
     }
-
-.table-warning-btn {
-    font-weight: bold;
-    font-size: 12px;
-    padding: 4px 12px;
-    border-radius: 6px;
-}

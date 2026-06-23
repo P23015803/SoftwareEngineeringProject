@@ -62,27 +62,34 @@ namespace SoftwareEngineeringProject
         {
             using (SqlConnection con = new SqlConnection(connStr))
             {
-
                 string query = @"
                     SELECT S.StudentID AS [Student ID], U.FullName AS [Student Name], U.Email AS [Email],
-                    SUM(CASE WHEN A.Status = 'Absent' THEN 1 ELSE 0 END) AS [Total Absences]
+                
+                        ISNULL(A.Status, 'N/A') AS [Status on Date],
+
+                        (SELECT COUNT(*) 
+                         FROM Attendance A2 
+                         INNER JOIN Enrollments E2 ON A2.EnrollmentID = E2.EnrollmentID
+                         WHERE E2.StudentID = S.StudentID 
+                           AND E2.CourseID = @CourseID 
+                           AND A2.Status = 'Absent') AS [Total Absences]
 
                     FROM Enrollments E
-
                     INNER JOIN Students S ON E.StudentID = S.StudentID
                     INNER JOIN Users U ON S.UserID = U.UserID
-
-                    LEFT JOIN Attendance A ON E.EnrollmentID = A.EnrollmentID
-                    WHERE E.CourseID = @CourseID";
+            
+                    LEFT JOIN Attendance A ON E.EnrollmentID = A.EnrollmentID ";
 
                 if (!string.IsNullOrEmpty(txtDate.Text))
                 {
-                    query += " AND (A.AttendanceDate = @Date OR A.AttendanceDate IS NULL)";
+                    query += " AND A.AttendanceDate = @Date ";
+                }
+                else
+                {
+                    query += " AND 1 = 0 ";
                 }
 
-                query += @" 
-                    GROUP BY S.StudentID, U.FullName, U.Email
-                    ORDER BY [Total Absences] ASC, U.FullName ASC";
+                query += @"GROUP BY S.StudentID, U.FullName, U.Email, A.Status ORDER BY [Total Absences] DESC, U.FullName ASC";
 
                 SqlCommand cmd = new SqlCommand(query, con);
                 cmd.Parameters.AddWithValue("@CourseID", Convert.ToInt32(Session["SelectedCourseID"]));
@@ -107,7 +114,6 @@ namespace SoftwareEngineeringProject
                     lblNoStudents.Text = "";
                     gvAttendance.Visible = true;
                     btnPDF.Visible = true;
-
                     gvAttendance.DataSource = dt;
                     gvAttendance.DataBind();
                 }

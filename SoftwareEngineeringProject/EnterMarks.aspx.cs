@@ -134,17 +134,19 @@ namespace SoftwareEngineeringProject
 
                     assignment = Convert.ToDecimal(assignmentCmd.ExecuteScalar());
 
-                    decimal midTest =
-                        string.IsNullOrWhiteSpace(((TextBox)row.FindControl("txtMidTest")).Text)
+                    decimal midTest = string.IsNullOrWhiteSpace(((TextBox)row.FindControl("txtMidTest")).Text)
                         ? 0
                         : Convert.ToDecimal(((TextBox)row.FindControl("txtMidTest")).Text);
 
-                    decimal finalExam =
-                        string.IsNullOrWhiteSpace(((TextBox)row.FindControl("txtFinalExam")).Text)
+                    decimal finalExam = string.IsNullOrWhiteSpace(((TextBox)row.FindControl("txtFinalExam")).Text)
                         ? 0
                         : Convert.ToDecimal(((TextBox)row.FindControl("txtFinalExam")).Text);
 
-                    decimal totalMarks = assignment + midTest + finalExam;
+                    decimal weightedAssignment = (assignment / 100m) * 20m;
+                    decimal weightedMidTest = (midTest / 100m) * 30m;
+                    decimal weightedFinalExam = (finalExam / 100m) * 50m;
+
+                    decimal totalMarks = weightedAssignment + weightedMidTest + weightedFinalExam;
 
                     string grade;
                     decimal gradePoint;

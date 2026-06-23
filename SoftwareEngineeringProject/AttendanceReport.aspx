@@ -89,28 +89,35 @@
                     CssClass="table table-bordered report-grid">
 
                     <Columns>
-                        <asp:BoundField DataField="Student ID" HeaderText="Student ID" HeaderStyle-CssClass="grid-header" />
+                        <asp:BoundField DataField="Student ID" 
+                            HeaderText="Student ID" 
+                            HeaderStyle-CssClass="grid-header" />
 
-                        <asp:BoundField DataField="Student Name" HeaderText="Student Name" HeaderStyle-CssClass="grid-header" />
+                        <asp:BoundField DataField="Student Name" 
+                            HeaderText="Student Name" 
+                            HeaderStyle-CssClass="grid-header" />
 
-                        <asp:BoundField DataField="Email" HeaderText="Email" HeaderStyle-CssClass="grid-header" />
-
-                        <asp:BoundField DataField="Total Absences" HeaderText="Total Absences" HeaderStyle-CssClass="grid-header" />
-                    
+                        <asp:BoundField DataField="Email" 
+                            HeaderText="Email" 
+                            HeaderStyle-CssClass="grid-header" />
+        
+                        <asp:BoundField DataField="Status on Date" 
+                            HeaderText="Status on Date" 
+                            HeaderStyle-CssClass="grid-header" />
+        
+                        <asp:BoundField DataField="Total Absences" 
+                            HeaderText="Total Absences" 
+                            HeaderStyle-CssClass="grid-header" />
+    
                         <asp:TemplateField HeaderText="Actions" HeaderStyle-CssClass="grid-header">
-
                             <ItemTemplate>
-
                                 <asp:Button ID="btnWarning" 
                                     runat="server" 
                                     Text="Warning" 
                                     CssClass="btn btn-warning btn-sm table-warning-btn" 
                                     OnClick="btnWarning_Click" />
-
                             </ItemTemplate>
-
                         </asp:TemplateField>
-
                     </Columns>
                 </asp:GridView>
 
