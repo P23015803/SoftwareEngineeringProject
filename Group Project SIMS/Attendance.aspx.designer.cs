@@ -11,7 +11,7 @@ namespace Group_Project_SIMS
 {
 
 
-    public partial class Results
+    public partial class Attendance
     {
 
         /// <summary>
@@ -25,15 +25,11 @@ namespace Group_Project_SIMS
 
         protected global::System.Web.UI.WebControls.TextBox txtSearchName;
 
-        protected global::System.Web.UI.WebControls.DropDownList ddlSemester;
+        protected global::System.Web.UI.WebControls.TextBox txtDate;
 
         protected global::System.Web.UI.WebControls.DropDownList ddlProgrammeFilter;
 
-        protected global::System.Web.UI.WebControls.DropDownList ddlCourseFilter;
-
-        protected global::System.Web.UI.WebControls.DropDownList ddlHOPFilter;
-
-        protected global::System.Web.UI.WebControls.DropDownList ddlLecturerFilter;
+        protected global::System.Web.UI.WebControls.DropDownList ddlStatusFilter;
 
         protected global::System.Web.UI.WebControls.Button btnSearch;
 
@@ -41,10 +37,6 @@ namespace Group_Project_SIMS
 
         protected global::System.Web.UI.WebControls.Label lblMessage;
 
-        protected global::System.Web.UI.WebControls.GridView gvResults;
-
-        protected global::System.Web.UI.WebControls.DropDownList ddlGradeFilter;
-
-        protected global::System.Web.UI.WebControls.DropDownList ddlPassFailFilter;
+        protected global::System.Web.UI.WebControls.GridView gvAttendance;
     }
 }

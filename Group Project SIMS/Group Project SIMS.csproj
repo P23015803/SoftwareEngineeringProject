@@ -70,6 +70,7 @@
     <Content Include="AddCalendar.aspx" />
     <Content Include="Admin Login.aspx" />
     <Content Include="ApproveCalendar.aspx" />
+    <Content Include="Attendance.aspx" />
     <Content Include="Courses.aspx" />
     <Content Include="Enrollment.aspx" />
     <Content Include="Global.asax" />
@@ -79,6 +80,7 @@
     <Content Include="RegisterUsers.aspx" />
     <Content Include="Results.aspx" />
     <Content Include="StudentDash.aspx" />
+    <Content Include="StyleSheet.css" />
     <Content Include="Web.config" />
     <Content Include="AdminDash.aspx" />
   </ItemGroup>
@@ -103,6 +105,13 @@
     </Compile>
     <Compile Include="ApproveCalendar.aspx.designer.cs">
       <DependentUpon>ApproveCalendar.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Attendance.aspx.cs">
+      <DependentUpon>Attendance.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Attendance.aspx.designer.cs">
+      <DependentUpon>Attendance.aspx</DependentUpon>
     </Compile>
     <Compile Include="Courses.aspx.cs">
       <DependentUpon>Courses.aspx</DependentUpon>
