@@ -75,6 +75,7 @@
                         <li class="nav-item"><a class="nav-link text-white" href="Results.aspx">Results</a></li>
                         <li class="nav-item"><a class="nav-link text-white" href="ApproveCalendar.aspx">Approve Calendar</a></li>
                         <li class="nav-item"><a class="nav-link text-white" href="ManageCalendar.aspx">Manage Calendar</a></li>
+                         <li class="nav-item"><a class="nav-link text-white" href="AdminAnnouncements.aspx">Admin Announcements</a></li>
                     </ul>
                 </div>
             </nav>
@@ -93,6 +94,8 @@
                 <a href="Enrollment.aspx" class="big-button">Enrollment</a>
                 <a href="Attendance.aspx" class="big-button">Attendance</a>
                 <a href="Results.aspx" class="big-button">Results</a>
+                <a href="AdminAnnouncements.aspx" class="big-button">Admin Announcements</a>
+                
             </div>
         </div>
     </form>
